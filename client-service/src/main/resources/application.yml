@@ -1,0 +1,37 @@
+#Application Configuration
+server:
+  port: 8080
+
+
+spring:
+  r2dbc:
+    url: r2dbc:h2:mem:///testdb
+    username: sa
+    password:
+    pool:
+      initial-size: 2
+      max-size: 5
+    console:
+      enabled: true
+  flyway:
+    enabled: true
+    locations: classpath:/db/migration
+  application:
+    name: client-service
+  # ===============================
+  # JPA / HIBERNATE
+  # ===============================
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.H2Dialect
+    properties:
+      hibernate:
+        show_sql: true
+        use_sql_comments: false
+        format_sql: false
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
+

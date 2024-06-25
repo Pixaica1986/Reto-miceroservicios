@@ -1,0 +1,48 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: BackendForFrontend
+  cloud:
+    loadbalancer:
+      retry:
+        enabled: true
+  main:
+    allow-bean-definition-overriding: true
+
+microservices:
+  cliente:
+    config:
+      url: http://localhost:8080
+    service:
+      url: /app/v1/clientes/{codigoUnico}
+  producto:
+    config:
+      url: http://localhost:8081
+    service:
+      url: /app/v1/productos/{codigoUnicoCliente}
+
+logging:
+  level:
+    root: INFO
+    com.bank.bffservice: DEBUG
+
+
+security:
+  oauth2:
+    client:
+      registration:
+        keycloak:
+          client-id: bff-client
+          client-secret: secret
+          scope: openid, profile, email
+          authorization-grant-type: authorization_code
+          redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+      provider:
+        keycloak:
+          authorization-uri: http://keycloak-server/auth/realms/{realm}/protocol/openid-connect/auth
+          token-uri: http://keycloak-server/auth/realms/{realm}/protocol/openid-connect/token
+          user-info-uri: http://keycloak-server/auth/realms/{realm}/protocol/openid-connect/userinfo
+          jwk-set-uri: http://keycloak-server/auth/realms/{realm}/protocol/openid-connect/certs
+          user-name-attribute: preferred_username
